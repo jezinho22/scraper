@@ -44,8 +44,7 @@ console.log('DotEnv: ', process.env.USERNAME)
 	page.on('console', (msg) => {
 		console.log('Get this my brethren:', msg.text());
 	})
-	// const username = process.env.USERNAME
-	// const button = await page.evaluate(()=> {
+
 	const fortune = await page.evaluate((process, page)=>{
 		// username += 'Hello'
 		console.log(process.env.USERNAME)
@@ -56,25 +55,27 @@ console.log('DotEnv: ', process.env.USERNAME)
 	}, process, page)
 	await page.waitForNavigation()
 
-	const activities = await page.$$('.activityname a')
-	const values = await page.evaluate(activities => {
-		const list = activities.map(activity => console.log(activity.getProperties()))
-		// return list
-		}, activities)
+	const values = await page.evaluate(() => {
+		const activities = document.querySelectorAll('.activityname a')
+		const links = []
+		for (let i = 0; i < activities.length; i++) {
+			links.push({title: activities[i].textContent, link: activities[i].href})
+		}
+		return links
+	})
+	console.log(values)
+	// extrxact instance id from link and add to this query url
+	const viewsUrl = 'https://techeducators.moodlecloud.com/report/participation/index.php?id=36&instanceid=3435&timefrom=&roleid=5&action='
 
-		console.log('New Page URL:', page.url());
-		console.log(values)
-		// page.type('#ageInput', '56');
-		// page.click('#submit',)
-		// const heading = await page.$('.fortune-para')
-		// const text = await heading.textContent
-		// console.log(text)
+	await page.goto(values[2].link, {
+		waitUntil: "networkidle2",
+	  });
 	
-	// await page.type('#nameInput', 'Tim')
-	// await page.type('#ageInput', '56');
-	// await page.click('#submit',)
+	const views = await page.evaluate(() => {
+		document.querySelectorAll('.reporttable tr')
+		// extract tr then .c0 and .c1
 
-	// capture client console.log()
+	})
 
 	browser.close()
 	
