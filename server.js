@@ -2,6 +2,7 @@ import puppeteer from "puppeteer";
 import express, { response } from "express";
 import cors from "cors";
 import 'dotenv/config';
+import fs from 'fs';
 
 const app = express();
 app.use(cors());
@@ -78,6 +79,22 @@ console.log('DotEnv: ', process.env.USERNAME)
 	})
 
 	browser.close()
+
+function readFile (filename) {
+	// probably this
+	const fileContents = fs.readFile('mynewfile1.txt', function(err, data) {
+		return data.toString()
+	})
+	return 
+}
+
+function writeFile () {
+	fs.writeFile('mynewfile1.txt', 'Wotcher content!', function (err) {
+		if (err) throw err;
+		console.log('Saved!');
+	});
+}
+
 	
 
 // 		// create array of objs using scraped data to send as response
